@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'react-native-elements';
 import CanallaScreen from './screens/Home/CanallaScreen';
 import MapScreen from './screens/Map/MapScreen';
 import ContactScreen from './screens/Contact/ContactScreen';
@@ -17,7 +17,7 @@ const getIconName = (routeName: string): string => {
     case 'Contact':
       return 'call';
     default:
-      return 'home'; // Valor por defecto en caso de que no coincida con ninguna ruta
+      return 'home';
   }
 };
 
@@ -30,8 +30,9 @@ const AppNavigator = () => {
             const iconName = getIconName(route.name);
 
             return (
-              <Ionicons
+              <Icon
                 name={iconName}
+                type="ionicon" // Si quieres usar los mismos íconos de Ionicons
                 size={size}
                 color={focused ? 'black' : color}
               />
