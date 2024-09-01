@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CanallaScreen from './screens/Home/CanallaScreen';
 import MapScreen from './screens/Map/MapScreen';
 import ContactScreen from './screens/Contact/ContactScreen';
-import logo from './assets/logo/_logo.png';
+import logo from '../assets/logo.png';
 
 const Tab = createBottomTabNavigator();
 
