@@ -1,12 +1,24 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-elements';
+import {Image} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 import CanallaScreen from './screens/Home/CanallaScreen';
 import MapScreen from './screens/Map/MapScreen';
 import ContactScreen from './screens/Contact/ContactScreen';
+import logo from './assets/logo/_logo.png';
 
 const Tab = createBottomTabNavigator();
+
+const LogoTitle = () => {
+  return (
+    <Image
+      source={logo}
+      style={{width: 120, height: 40}}
+      resizeMode="contain"
+    />
+  );
+};
 
 const getIconName = (routeName: string): string => {
   switch (routeName) {
@@ -25,14 +37,13 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
             const iconName = getIconName(route.name);
 
             return (
               <Icon
                 name={iconName}
-                type="ionicon" // Si quieres usar los mismos íconos de Ionicons
                 size={size}
                 color={focused ? 'black' : color}
               />
@@ -44,8 +55,9 @@ const AppNavigator = () => {
             paddingBottom: 10,
             height: 60,
           },
-        })}
-      >
+          headerTitle: () => <LogoTitle />,
+          headerTitleAlign: 'center',
+        })}>
         <Tab.Screen name="Canalla" component={CanallaScreen} />
         <Tab.Screen name="Map" component={MapScreen} />
         <Tab.Screen name="Contact" component={ContactScreen} />
@@ -55,3 +67,4 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
+//src\AppNavigator.tsx
