@@ -2,16 +2,44 @@
     {
       "title": "Canalla",
       "subtitle": "Calle Ing. Jorge Luque Loyola 107",
-      "image": "canalla_fachada",  
+      "imageKey": "canalla_fachada",
       "latitude": 19.413109070867776,
       "longitude": -99.0340585
     },
     {
       "title": "Lolita",
       "subtitle": "Ejemplo de ubicación 2",
-      "image": "lolita_fachada",  
+      "imageKey": "lolita_fachada",
       "latitude": 19.44563935841973,
       "longitude": -99.15963857321412
+    },
+    {
+      "title": "Ubicación 3",
+      "subtitle": "Descripción de la ubicación 3",
+      "imageKey": "ubicacion3_fachada",
+      "latitude": 19.432608,
+      "longitude": -99.133209
+    },
+    {
+      "title": "Ubicación 4",
+      "subtitle": "Descripción de la ubicación 4",
+      "imageKey": "ubicacion4_fachada",
+      "latitude": 19.435789,
+      "longitude": -99.154657
+    },
+    {
+      "title": "Ubicación 5",
+      "subtitle": "Descripción de la ubicación 5",
+      "imageKey": "ubicacion5_fachada",
+      "latitude": 19.438961,
+      "longitude": -99.169838
+    },
+    {
+      "title": "Ubicación 6",
+      "subtitle": "Descripción de la ubicación 6",
+      "imageKey": "ubicacion6_fachada",
+      "latitude": 19.441123,
+      "longitude": -99.184920
     }
   ]
   

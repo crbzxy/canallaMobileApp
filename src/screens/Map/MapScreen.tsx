@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,35 +7,47 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import locations from '../../../locations.json'; // Importamos el archivo JSON con las ubicaciones
+import locationsData from '../../../locations.json'; // Importa el archivo JSON local
 
 // Definir el tipo de datos para una ubicación
-type ImageKey = 'canalla_fachada' | 'lolita_fachada';
-
 interface Location {
   title: string;
   subtitle: string;
-  image: ImageKey;
+  imageKey: string;
   latitude: number;
   longitude: number;
 }
 
-const imageMap: Record<ImageKey, any> = {
+const imageMap: { [key: string]: any } = {
   canalla_fachada: require('../../../assets/canalla/fachadas/canalla_fachada.jpeg'),
   lolita_fachada: require('../../../assets/canalla/fachadas/lolita_fachada.jpg'),
+  ubicacion3_fachada: require('../../../assets/canalla/fachadas/canalla_fachada.jpeg'),
+  ubicacion4_fachada: require('../../../assets/canalla/fachadas/canalla_fachada.jpeg'),
+  ubicacion5_fachada: require('../../../assets/canalla/fachadas/canalla_fachada.jpeg'),
+  ubicacion6_fachada: require('../../../assets/canalla/fachadas/canalla_fachada.jpeg'),
 };
 
-const getImageSource = (imageName: ImageKey) => {
-  return imageMap[imageName] || null;
+
+const getImageSource = (imageKey: string) => {
+  return imageMap[imageKey];
 };
 
 const MapScreen: React.FC = () => {
+  const [locations, setLocations] = useState<Location[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const mapRef = useRef<MapView | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Cargar los datos del archivo JSON local
+    setLocations(locationsData);
+    setLoading(false);
+  }, []);
 
   const openModal = (location: Location) => {
     setSelectedLocation(location);
@@ -54,14 +66,22 @@ const MapScreen: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <MapView
         ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: locations[0].latitude,
-          longitude: locations[0].longitude,
+          latitude: locations[0]?.latitude || 0,
+          longitude: locations[0]?.longitude || 0,
           latitudeDelta: 0.0422,
           longitudeDelta: 0.0221,
         }}>
@@ -90,7 +110,7 @@ const MapScreen: React.FC = () => {
               openModal(location);
             }}>
             <Image
-              source={getImageSource(location.image)}
+              source={getImageSource(location.imageKey)}
               style={styles.cardImage}
             />
             <Text style={styles.cardTitle}>{location.title}</Text>
@@ -117,7 +137,7 @@ const MapScreen: React.FC = () => {
               </Text>
               <Image
                 style={styles.calloutImage}
-                source={getImageSource(selectedLocation.image)}
+                source={getImageSource(selectedLocation.imageKey)}
               />
             </>
           )}
@@ -202,6 +222,11 @@ const styles = StyleSheet.create({
     width: 260,
     height: 130,
     borderRadius: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

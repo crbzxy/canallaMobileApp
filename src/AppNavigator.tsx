@@ -1,70 +1,85 @@
-import React from 'react';
-import {Image} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useMemo } from 'react';
+import { Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { RouteProp } from '@react-navigation/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CanallaScreen from './screens/Home/CanallaScreen';
 import MapScreen from './screens/Map/MapScreen';
 import ContactScreen from './screens/Contact/ContactScreen';
 import logo from '../assets/logo.png';
 
-const Tab = createBottomTabNavigator();
+type RouteName = 'Canalla' | 'Mapa' | 'Contacto';
 
-const LogoTitle = () => {
-  return (
-    <Image
-      source={logo}
-      style={{width: 120, height: 40}}
-      resizeMode="contain"
-    />
-  );
+type RootStackParamList = {
+  Canalla: undefined;
+  Mapa: undefined;
+  Contacto: undefined;
 };
 
-const getIconName = (routeName: string): string => {
+const Tab = createBottomTabNavigator<RootStackParamList>();
+
+const LogoTitle: React.FC = () => (
+  <Image
+    source={logo}
+    style={{ width: 120, height: 40 }}
+    resizeMode="contain"
+  />
+);
+
+const getIconName = (routeName: RouteName): string => {
   switch (routeName) {
     case 'Canalla':
       return 'home';
-    case 'Map':
+    case 'Mapa':
       return 'map';
-    case 'Contact':
+    case 'Contacto':
       return 'call';
     default:
       return 'home';
   }
 };
 
-const AppNavigator = () => {
+const AppNavigator: React.FC = () => {
+  const screenOptions = ({
+    route,
+  }: {
+    route: RouteProp<RootStackParamList, keyof RootStackParamList>;
+  }): BottomTabNavigationOptions => {
+    const iconName = useMemo(() => getIconName(route.name as RouteName), [route.name]);
+
+    return {
+      tabBarIcon: ({
+        focused,
+        color,
+        size,
+      }: {
+        focused: boolean;
+        color: string;
+        size: number;
+      }) => (
+        <Icon name={iconName} size={size} color={focused ? 'black' : color} />
+      ),
+      tabBarActiveTintColor: 'black',
+      tabBarInactiveTintColor: 'gray',
+      tabBarStyle: {
+        paddingBottom: 10,
+        height: 60,
+      },
+      headerTitle: () => <LogoTitle />,
+      headerTitleAlign: 'center',
+    };
+  };
+
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            const iconName = getIconName(route.name);
-
-            return (
-              <Icon
-                name={iconName}
-                size={size}
-                color={focused ? 'black' : color}
-              />
-            );
-          },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-          tabBarStyle: {
-            paddingBottom: 10,
-            height: 60,
-          },
-          headerTitle: () => <LogoTitle />,
-          headerTitleAlign: 'center',
-        })}>
+      <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen name="Canalla" component={CanallaScreen} />
-        <Tab.Screen name="Map" component={MapScreen} />
-        <Tab.Screen name="Contact" component={ContactScreen} />
+        <Tab.Screen name="Mapa" component={MapScreen} />
+        <Tab.Screen name="Contacto" component={ContactScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
 
 export default AppNavigator;
-//src\AppNavigator.tsx
